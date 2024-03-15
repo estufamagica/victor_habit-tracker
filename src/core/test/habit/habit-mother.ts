@@ -9,17 +9,24 @@ export class habitMother{
     private duration: number = 60
     private restTime: number = 600
     private userId: string = uuidv4()
+    private progress: number = 0
 
     build(): habit {
-        return habit.create(
+        return habit.createWithProgess(
             this.id,
             this.name,
             this.description,
             this.frequency,
             this.duration,
             this.restTime,
-            this.userId
+            this.userId,
+            this.progress
         )
+    }
+
+    withProgress(progress: number){
+        this.progress = progress
+        return this
     }
 
     static create(): habit {
