@@ -15,6 +15,14 @@ export class habitRepository{
         return this.repository.find((habit) => habit.name === name)
     }
 
+    userHasHabits(userId: string): boolean{
+        return this.repository.some((h) => h.userId === userId)
+    }
+
+    findUserHabits(userId: string): habit[] {
+        return this.repository.filter(habit => habit.userId.includes(userId))
+    }
+
     isHabitSaved(habit: habit): boolean {
         return this.repository.some((h) => h.id === habit.id)
     }
