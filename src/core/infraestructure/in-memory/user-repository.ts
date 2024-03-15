@@ -1,4 +1,4 @@
-import { User } from "src/core/domain/user/user";
+import { User } from "../../domain/user/user";
 
 export class UserRepository{
     private repository: User[] = []

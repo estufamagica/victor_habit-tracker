@@ -2,6 +2,8 @@ import { UserRepository } from "../../infraestructure/in-memory/user-repository"
 import { RegisterUserCommandHandler } from "./register-user-command-handler"
 import { userMother } from "../../test/user/user-mother"
 import { RegisteruserCommand } from "./register-user-command"
+import { userAlreadyExistsError } from "./user-already-exists-error"
+import { invalidUserCredentials } from "../../domain/user/invalid-user-fields-error"
 
 describe('RegisterUserCommandhandler', () => {
     const prepareScenario = () => {
@@ -44,7 +46,9 @@ describe('RegisterUserCommandhandler', () => {
             user.update_date
         )
         //Then
-        expect(() => handler.handle(command)).toThrow()
+        expect(() => handler.handle(command)).toThrow(
+            userAlreadyExistsError.withId(command.id)
+        )
     })
 
     it('should throw an error if the data given is incomplete', ()=>{
@@ -61,6 +65,8 @@ describe('RegisterUserCommandhandler', () => {
             user.update_date
         )
         //Then
-        expect(() => handler.handle(command)).toThrow()
+        expect(() => handler.handle(command)).toThrow(
+            invalidUserCredentials.emptyUsername()
+        )
     })
 })

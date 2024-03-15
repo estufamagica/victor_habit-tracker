@@ -15,4 +15,9 @@ export class userMother {
     static create(): User {
         return new userMother().build()
     }
+
+    withId(id: string){
+        this.id = id
+        return this
+    }
 }
