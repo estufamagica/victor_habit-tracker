@@ -7,5 +7,6 @@ export class createHabitCommand{
         readonly duration: number,
         readonly restTime: number,
         readonly userId: string,
+        readonly wearableDeviceid: string = null
     ){}
 }

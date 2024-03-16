@@ -8,6 +8,7 @@ import { duplicatedHabitName } from "./duplicated-habit-name-error"
 import { invalidHabitFields } from "../../domain/habit/invalid-habit-fields-error"
 import { invalidHabitSchedule } from "../../domain/habit/invalid-habit-schedule-error"
 import { UserNotFound } from "../user-not-found-error"
+import { wearableDeviceService } from "../../domain/habit/wearable-device-service"
 
 describe('CreateHabitCommandhandler', () => {
     let habitRepositoryTest: habitRepository
@@ -142,6 +143,37 @@ describe('CreateHabitCommandhandler', () => {
         //Then
         it('should cretate the habit', () => {
             expect(() => habitRepositoryTest.isHabitSaved(habit)).toBeTruthy()
+        })
+    })
+
+    //device
+
+    describe('When the habit is created with valid credentials and with a device id', () => {
+        //Given
+        const deviceConnection = wearableDeviceService.connect()
+        const habit = new habitMother().withWearableDevice(deviceConnection.deviceId).build()
+        const user = new userMother().withId(habit.userId).build()
+        const command = new createHabitCommand(
+            habit.id,
+            habit.name,
+            habit.description,
+            habit.schedule.frequency,
+            habit.schedule.duration,
+            habit.schedule.restTime,
+            habit.userId,
+            habit.wearableDeviceId
+            )
+        
+        beforeEach(() => {
+            userRepository.save(user)
+        })
+        
+        it('should create a habit with a device id', () => {
+            //When
+            commandHandler.handle(command)
+            //Then
+            expect(() => habitRepositoryTest.isHabitSaved(habit)).toBeTruthy()
+            expect(habitRepositoryTest.findbyId(habit.id).wearableDeviceId).toEqual(deviceConnection.deviceId)
         })
     })
 })

@@ -10,8 +10,8 @@ export class habit{
         readonly schedule: Schedule,
         readonly userId: string,
         readonly progress: number = 0,
-        readonly validated: boolean = false,
         readonly wearableDeviceId: string = null,
+        readonly validated: boolean = false,
         readonly creation_date: Date = new Date(),
         readonly update_date: Date = new Date(),
     ){}
@@ -24,7 +24,9 @@ export class habit{
         duration: number,
         restTime: number,
         userId: string,
-        progress: number = 0
+        progress: number = 0, 
+        wearableDeviceId: string = null,
+        validated: boolean = false
     ):habit {
         if(name.length == 0){
             throw invalidHabitFields.emptyName()
@@ -48,7 +50,7 @@ export class habit{
             throw invalidHabitProgress.withProgress(progress)
         }
 
-        return new habit(id,name, description, schedule, userId, progress)
+        return new habit(id,name, description, schedule, userId, progress, wearableDeviceId, validated)
 
     }
 

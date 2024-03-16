@@ -10,6 +10,8 @@ export class habitMother{
     private restTime: number = 600
     private userId: string = uuidv4()
     private progress: number = 0
+    private wearableDeviceId: string = null
+    private validation: boolean = false
 
     build(): habit {
         return habit.create(
@@ -20,12 +22,29 @@ export class habitMother{
             this.duration,
             this.restTime,
             this.userId,
-            this.progress
+            this.progress,
+            this.wearableDeviceId,
+            this.validation
         )
     }
 
     withProgress(progress: number){
         this.progress = progress
+        return this
+    }
+
+    withUserId(UserId: string){
+        this.userId = UserId
+        return this
+    }
+
+    withWearableDevice(wearableDeviceId: string){
+        this.wearableDeviceId = wearableDeviceId
+        return this
+    }
+
+    withValidation(validation: boolean){
+        this.validation = validation
         return this
     }
 

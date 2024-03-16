@@ -28,7 +28,9 @@ export class registerHabitProgressCommandhandler{
             command.duration,
             command.restTime,
             command.userId,
-            command.progress
+            command.progress,
+            command.wearableDeviceid,
+            command.validation
         ))
     }
 }

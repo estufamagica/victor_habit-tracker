@@ -27,7 +27,9 @@ export class CreateHabitCommandhandler{
             command.frequency,
             command.duration,
             command.restTime,
-            command.userId
+            command.userId,
+            0,
+            command.wearableDeviceid
         ))
     }
 }

@@ -7,6 +7,8 @@ export class registerHabitProgressCommand{
         readonly duration: number,
         readonly restTime: number,
         readonly userId: string,
-        readonly progress: number
+        readonly progress: number,
+        readonly wearableDeviceid: string = null,
+        readonly validation: boolean = false
     ){}
 }
