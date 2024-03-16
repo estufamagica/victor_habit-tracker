@@ -12,7 +12,7 @@ export class habitMother{
     private progress: number = 0
 
     build(): habit {
-        return habit.createWithProgess(
+        return habit.create(
             this.id,
             this.name,
             this.description,

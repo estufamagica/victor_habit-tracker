@@ -20,7 +20,7 @@ export class registerHabitProgressCommandhandler{
             throw duplicatedHabitName.withName(command.name)
         }
 
-        this.habitRepository.save(habit.createWithProgess(
+        this.habitRepository.save(habit.create(
             command.id,
             command.name,
             command.description,
