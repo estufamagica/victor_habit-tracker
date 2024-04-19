@@ -1,6 +1,10 @@
 import { invalidDates } from "../invalid-dates-error"
+import { cancelChallengeError } from "./cancelChallengeError"
+import { ChallengeStatus } from "./challengeStatus"
 import { invalidDescriptionLength } from "./invalid-description-length-error"
 import { invalidNumberTimes } from "./invalid-number-times-error"
+
+
 
 export class challenge{
     constructor(
@@ -9,7 +13,8 @@ export class challenge{
         readonly description: string,
         readonly numberOfTimes: number,
         readonly starDate: Date,
-        readonly deadLine: Date
+        readonly deadLine: Date,
+        private status: ChallengeStatus
     ){}
 
     static create(
@@ -18,7 +23,8 @@ export class challenge{
         description: string,
         times: number,
         starDate: Date,
-        deadLine: Date
+        deadLine: Date,
+        status: string
     ){
 
         if(description.length > 30){
@@ -33,6 +39,18 @@ export class challenge{
             throw invalidDates.withDates()
         }
 
-        return new challenge(id, habitId, description, times, starDate, deadLine)
+        return new challenge(id, habitId, description, times, starDate, deadLine, new ChallengeStatus(status))
+    }
+
+    isCanceled(){
+        return this.status.challenge_status === 'Cancelado'
+    }
+
+    cancelChallenge(){
+        if(this.status.challenge_status === 'Cancelado' || this.status.challenge_status === 'Completado'){
+            throw cancelChallengeError.withStatus(this.status.challenge_status)
+        }
+
+        this.status = ChallengeStatus.Cancelled()
     }
 }

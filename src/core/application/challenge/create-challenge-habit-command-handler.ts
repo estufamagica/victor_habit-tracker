@@ -30,6 +30,7 @@ export class CreateChallengehabitCommandHandler{
             command.times,
             command.startDate,
             command.deadLine,
+            'Pendiente'
         )
        ) 
     }

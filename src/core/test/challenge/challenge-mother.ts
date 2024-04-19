@@ -8,6 +8,7 @@ export class challengeMother{
     private times: number = 1
     private starDate: Date = new Date()
     private deadLine: Date = new Date()
+    private status: string = 'Pendiente'
 
     build(): challenge {
         return challenge.create(
@@ -16,12 +17,18 @@ export class challengeMother{
             this.description,
             this.times,
             this.starDate,
-            this.deadLine
+            this.deadLine,
+            this.status
         )
     }
 
     withHabitId(id: string){
         this.habitId = id
+        return this
+    }
+
+    withStatus(status: string){
+        this.status = status
         return this
     }
 
