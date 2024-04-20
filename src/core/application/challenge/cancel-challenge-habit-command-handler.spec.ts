@@ -12,7 +12,7 @@ describe('cancelChallengeHabitCommandHandler', () => {
     let commandHandler: CancelChallengeHabitCommandHandler
     let challenge: challenge
     let challengeId: string
-    let command
+    let command: cancelChallengeHabitCommand
 
     beforeEach(() => {
         challengeRepositoryTest = new challengeRepository()
