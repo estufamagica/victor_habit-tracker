@@ -13,4 +13,8 @@ export class eventPublisheInMemory implements EventPublisher{
     isEmpty(): boolean{
         return this.publishedEvents.length === 0
     }
+
+    pop(): domainEvent{
+        return this.publishedEvents[-1]
+    }
 }

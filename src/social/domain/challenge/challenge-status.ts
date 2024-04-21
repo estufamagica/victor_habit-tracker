@@ -1,4 +1,5 @@
 import { domainEvent } from "../domain-event"
+import { addUsersEvent } from "./add-users-event"
 import { challengeStartedEvent } from "./challenge-started-event"
 import { emptyFieldsError } from "./empty-field-error"
 
@@ -41,7 +42,7 @@ export class challengeStatus{
         )
     }
 
-    static withChallengeStarted(event: challengeStartedEvent): challengeStatus{
+    withChallengeStarted(event: challengeStartedEvent): challengeStatus{
         
         const challengeState = new challengeStatus(
             event.aggregateId,
@@ -56,6 +57,33 @@ export class challengeStatus{
             Started_Status,
             event.payload.startDate,
             event.payload.users,
+        )
+
+        challengeState.checkEventPayload()
+
+        return challengeState
+    }
+
+    withAddUsers(event: addUsersEvent): challengeStatus{
+        let addedUsers: string [] = this.users
+
+        event.payload.users.forEach((user) => {
+            addedUsers.push(user)
+        })
+        
+        const challengeState = new challengeStatus(
+            this.challengeId,
+            this.habitId,
+            this.objective,
+            this.partner,
+            this.project,
+            this.cost,
+            this.startDate,
+            this.deadLine,
+            this.progress,
+            this.status,
+            event.payload.date,
+            addedUsers
         )
 
         challengeState.checkEventPayload()
