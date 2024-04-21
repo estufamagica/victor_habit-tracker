@@ -12,9 +12,9 @@ export class challengeRepositoryInMemory implements challengeRepository{
         return this.repository.find((challenge) => challenge.challengeId === id)
     }
 
-    /*findHabitChallenges(habitId: string): challenge[] {
-        return this.repository.filter(challenge => challenge.habitId.includes(habitId))
-    }*/
+    findHabitChallenges(habitId: string): challenge[] {
+        return this.repository.filter(challenge => challenge.getStatus().habitId.includes(habitId))
+    }
 
     isChallengeSaved(challenge: challenge): boolean {
         return this.repository.some((c) => c.challengeId === challenge.challengeId)

@@ -5,6 +5,8 @@ import { challengeStartedEvent } from "./challenge-started-event"
 import { challengeStatus } from "./challenge-status"
 import { v4 as uuidv4 } from 'uuid'
 import { emptyFieldsError } from "./empty-field-error"
+import { progressLoggedEvent } from "./progress-logged-event"
+import { challengeCompletedEvent } from "./challenge-completed-event"
 
 
 export class challenge extends EventSourcedEntity{
@@ -26,6 +28,12 @@ export class challenge extends EventSourcedEntity{
             case addUsersEvent.Type:
                 this.whenAddUsers(event as unknown as addUsersEvent)
                 break
+            case progressLoggedEvent.Type:
+                this.whenProgressLogged(event as unknown as progressLoggedEvent)
+                break
+            case challengeCompletedEvent.Type:
+                this.whenChallengeCompleted(event as unknown as challengeCompletedEvent)
+                break
         }
     }
 
@@ -35,6 +43,14 @@ export class challenge extends EventSourcedEntity{
 
     private whenAddUsers(event: addUsersEvent){
         this.status = this.status.withAddUsers(event)
+    }
+
+    private whenProgressLogged(event: progressLoggedEvent){
+        this.status = this.status.withProgressLogged(event)
+    }
+
+    private whenChallengeCompleted(event: challengeCompletedEvent){
+        this.status = this.status.withChallengeCompleted(event)
     }
 
     static create(stream: Array<domainEvent>){
@@ -89,5 +105,17 @@ export class challenge extends EventSourcedEntity{
         }
 
         this.apply(addUsersEvent.with(this.status.challengeId, users, date))
+    }
+
+    getStatus(){ return this.status}
+
+    logProgress(progress: number, date: Date){
+        
+        this.apply(progressLoggedEvent.with(this.challengeId, progress, date))
+
+        if(this.status.hasReachedTheObjective()){
+            this.apply(challengeCompletedEvent.with(this.challengeId, date))
+        }
+
     }
 }

@@ -1,7 +1,9 @@
 import { domainEvent } from "../domain-event"
 import { addUsersEvent } from "./add-users-event"
+import { challengeCompletedEvent } from "./challenge-completed-event"
 import { challengeStartedEvent } from "./challenge-started-event"
 import { emptyFieldsError } from "./empty-field-error"
+import { progressLoggedEvent } from "./progress-logged-event"
 
 const Started_Status: string = 'STARTED'
 const Achieved_Status: string = 'ACHIEVED'
@@ -89,6 +91,49 @@ export class challengeStatus{
         challengeState.checkEventPayload()
 
         return challengeState
+    }
+
+    withProgressLogged(event: progressLoggedEvent): challengeStatus{
+        
+        const challenge_state = new challengeStatus(
+            this.challengeId,
+            this.habitId,
+            this.objective,
+            this.partner,
+            this.project,
+            this.cost,
+            this.startDate,
+            this.deadLine,
+            this.progress + event.payload.progress,
+            this.status,
+            event.payload.date,
+            this.users,
+            this.consecution
+        )
+
+        return challenge_state
+    }
+
+    withChallengeCompleted(event: challengeCompletedEvent): challengeStatus{
+        return new challengeStatus(
+            this.challengeId,
+            this.habitId,
+            this.objective,
+            this.partner,
+            this.project,
+            this.cost,
+            this.startDate,
+            this.deadLine,
+            this.progress,
+            Achieved_Status,
+            event.payload.date,
+            this.users,
+            this.consecution
+        )
+    }
+
+    hasReachedTheObjective(){
+        return this.objective <= this.progress
     }
 
     protected checkEventPayload(): void {
